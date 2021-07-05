@@ -1,0 +1,14 @@
+We can't really delete the node, but we can kinda achieve the same effect by instead removing the next node after copying its data into the node that we were asked to delete.
+
+C++
+
+void deleteNode(ListNode* node) {
+    *node = *node->next;
+}
+But better properly delete the next node:
+
+void deleteNode(ListNode* node) {
+    auto next = node->next;
+    *node = *next;
+    delete next;
+}
