@@ -1,0 +1,85 @@
+/*vector<int> main_stack;
+vector<int> min_stack;
+//int min;
+MinStack::MinStack() 
+{
+  //  min=-2147483648;
+}
+
+void MinStack::push(int x)
+{
+    main_stack.push_back(x);
+    if(min_stack.size()==0 || x<=*(min_stack.end()-1))
+    {
+        //min=x;
+        min_stack.push_back(x);
+    }
+}
+
+void MinStack::pop() 
+{
+    if(main_stack.size()==0)
+    return;
+    if( *(min_stack.end()-1)==*(main_stack.end()-1) )
+    {
+        min_stack.pop_back();
+        //min=*(min_stack.end()-1);
+    }
+    main_stack.pop_back();
+}
+
+int MinStack::top()
+{
+    if(main_stack.size()==0)
+    return -1;
+    return *(main_stack.end()-1);
+}
+
+int MinStack::getMin()
+{
+    if(main_stack.size()==0)
+    return -1;
+    return *(min_stack.end()-1);
+}*/
+
+int arr[12345678],minimum[12345678];
+int cur,mincur;
+MinStack::MinStack() {
+    cur=-1;
+    mincur=-1;
+}
+
+void MinStack::push(int x) {
+    //assert(cur<=1234567);
+    if(mincur==-1 || x<=minimum[mincur])
+    {
+        mincur++;
+        minimum[mincur]=x;
+    }
+    cur++;
+    arr[cur]=x;
+}
+
+void MinStack::pop() {
+    //assert(cur<=1234567);
+    if(cur==-1)
+     return;
+    if(arr[cur]==minimum[mincur])
+     mincur--;
+    cur--;
+}
+
+int MinStack::top() {
+    //assert(cur<=1234567);
+    if(cur==-1)
+     return -1;
+    
+    return arr[cur];
+}
+
+int MinStack::getMin() {
+    //assert(cur<=1234567);
+    if(mincur==-1)
+     return -1;
+    return minimum[mincur];
+}
