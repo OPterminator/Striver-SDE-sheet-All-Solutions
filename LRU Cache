@@ -1,0 +1,131 @@
+struct QueueNode {
+    int key;
+    int value;
+    struct QueueNode* prev;
+    struct QueueNode* next;
+};
+struct Queue {
+    int capacity;
+    int count;
+    struct QueueNode* front;
+    struct QueueNode* rear;
+};
+struct Hash {
+    int size;
+    struct QueueNode** array;
+};
+struct Queue* que;
+struct Hash* has;
+struct Queue* createQueue(int c) {
+    struct Queue* q = (struct Queue*) malloc(sizeof(struct Queue));
+    q->capacity = c;
+    q->count = 0;
+    q->front=q->rear=NULL;
+    return q;
+}
+struct Hash* createHash(int s) {
+    struct Hash* h= (struct Hash*) malloc(sizeof(struct Hash));
+    h->size = s;
+    h->array = (struct QueueNode**) malloc(s*sizeof(struct QueueNode*));
+    int i;
+    for(i=0;i<s;i++) {
+        h->array[i] = NULL;
+    }
+    return h;
+}
+struct QueueNode* newNode(int key,int value) {
+    struct QueueNode* node = (struct QueueNode*) malloc(sizeof(struct QueueNode));
+    node->key = key;
+    node->value = value;
+    node->prev=NULL;
+    node->next = NULL;
+    return node;
+}
+int isEmpty(struct Queue* q) {
+    return q->rear == NULL;
+}
+int isFull(struct Queue* q) {
+    return q->count == q->capacity;
+}
+void deQueue(struct Queue* q) {
+    if(isEmpty(q)) {
+        return;
+    }
+    struct QueueNode* temp = q->rear;
+    if(q->front== q->rear) {
+        q->front=NULL;
+    }
+    if(temp->prev) {
+        temp->prev->next = NULL;
+    }
+    q->rear = q->rear->prev;
+    
+    q->count--;
+    free(temp);
+}
+void enqueue(struct Queue* q,int key, int value) {
+    if(isFull(que)) {
+        has->array[q->rear->key] = NULL;
+        deQueue(q);
+    } 
+    struct QueueNode* node = newNode(key,value);
+    if(isEmpty(que)) {
+        q->front=q->rear = node;
+    } else {
+        node->next = q->front;
+        q->front->prev = node;
+        q->front = node;
+    }
+    has->array[key] = node;
+    q->count++;
+}
+
+void moveNodeToFront(struct QueueNode* node, struct Queue* q) {
+            node->prev->next = node->next;
+            if(node->next) {
+                node->next->prev = node->prev;
+            }
+            if(node==que->rear) {
+                que->rear = node->prev;
+            }
+            node->next = que->front;
+            que->front->prev = node;
+            node->prev = NULL;
+            que->front = node;
+}
+
+LRUCache::LRUCache(int capacity) {
+    if(que != NULL) {
+    free(que);
+}
+if(has!= NULL) {
+    free(has);
+}
+que = createQueue(capacity);
+has = createHash(1000);
+}
+
+int LRUCache::get(int key) {
+    struct QueueNode* node = has->array[key];
+    if(node != NULL) {
+        int val = node->value;
+        if(node != que->front) {
+           moveNodeToFront(node,que);
+        }
+        return val;
+    }else {
+        return -1;
+    }
+}
+
+void LRUCache::set(int key, int value) {
+    struct QueueNode* node = has->array[key];
+    if(node == NULL) {
+       enqueue(que,key,value); 
+    } else {
+        node->value = value;
+        if(node != que->front) {
+            moveNodeToFront(node,que);
+        }
+    }
+}
