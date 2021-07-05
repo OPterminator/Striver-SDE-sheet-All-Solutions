@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<vector<string>>str;
+    bool ispal(string str){
+        int l=0,r=str.size()-1;
+        while(l<r){
+            if(str[l++]!=str[r--]){
+            return false;
+        }
+        }
+        return true;
+    }
+    void solve(string s,int i,int n){
+        if(i>=n){
+            return;
+        }
+        vector<string>ans;
+        for(int j=0;j<s.size();j+=i){
+            string t=s.substr(j,i);
+            if(ispal(t)){
+                ans.push_back(t);
+            }
+        }
+        str.push_back(ans);
+        solve(s,i+1,n);
+    }
+    vector<vector<string>> partition(string s) {
+        int n=s.size();
+        solve(s,1,n);
+        return str;
+    }
+};
