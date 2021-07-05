@@ -1,0 +1,50 @@
+class Solution {
+public:
+    vector<vector<string>>final;
+    bool isSafe(vector<string>s,int i,int j,int n){
+        for(int row=0;row<i;row++){
+            if(s[row][j]=='Q'){
+                return false;
+            }
+        }
+        //Left Diagonal check
+        int x=i;
+        int y=j;
+        while(x>=0&&y>=0){
+            if(s[x][y]=='Q'){
+                return false;
+            }
+            x--;
+            y--;
+        }
+        //Right Diagonal
+        x=i;
+        y=j;
+        while(x>=0&&y<n){
+            if(s[x][y]=='Q'){
+               return false;
+            }
+            x--;
+            y++;
+        }
+        return true;
+    }
+    void solve(vector<string>&s,int i,int n){
+        if(i==n){
+            final.push_back(s);
+            return;
+        }
+        for(int j=0;j<n;j++){
+            if(isSafe(s,i,j,n)){
+                s[i][j]='Q';
+                solve(s,i+1,n);
+                s[i][j]='.';
+            }
+        }
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        vector<string>s(n,string(n,'.'));
+        solve(s,0,n);
+        return final;
+    }
+};
