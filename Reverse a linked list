@@ -1,0 +1,63 @@
+Well, since the head pointer may also be modified, we create a pre that points to it to facilitate the reverse process.
+
+For the example list 1 -> 2 -> 3 -> 4 -> 5 in the problem statement, it will become 0 -> 1 -> 2 -> 3 -> 4 -> 5 (we init pre -> val to be 0). We also set a pointer cur to head. Then we keep inserting cur -> next after pre until cur becomes the last node. This idea uses three pointers (pre, cur and temp). You may implement it as follows.
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode *pre = new ListNode(0), *cur = head;
+        pre -> next = head;
+        while (cur && cur -> next) {
+            ListNode* temp = pre -> next;
+            pre -> next = cur -> next;
+            cur -> next = cur -> next -> next;
+            pre -> next -> next = temp;
+        }
+        return pre -> next;
+    }
+};
+Or
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode *pre = new ListNode(0), *cur = head;
+        pre -> next = head;
+        while (cur && cur -> next) {
+            ListNode* temp = cur -> next;
+            cur -> next = temp -> next;
+            temp -> next = pre -> next;
+            pre -> next = temp;
+        }
+        return pre -> next;
+    }
+};
+We can even use fewer pointers. The idea is to reverse one node at a time from the beginning of the list.
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* cur = NULL;
+        while (head) {
+            ListNode* next = head -> next;
+            head -> next = cur;
+            cur = head;
+            head = next;
+        }
+        return cur;
+    }
+};
+All the above solutions are iterative. A recursive one is as follows. First reverse all the nodes after head. Then we need to set head to be the final node in the reversed list. We simply set its next node in the original list (head -> next) to point to it and sets its next to NULL.
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if (!head || !(head -> next)) {
+            return head;
+        }
+        ListNode* node = reverseList(head -> next);
+        head -> next -> next = head;
+        head -> next = NULL;
+        return node;
+    }
+};
