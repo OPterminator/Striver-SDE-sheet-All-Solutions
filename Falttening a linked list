@@ -1,0 +1,51 @@
+/* Node structure  used in the program
+struct Node{
+	int data;
+	struct Node * next;
+	struct Node * bottom ;
+}; */
+/*  Function which returns the  root of 
+    the flattened linked list. */
+struct compare
+{
+    bool operator()(Node* a, Node* b)
+    {
+     return a->data >= b->data;   
+    }
+};
+Node *flatten(Node *root)
+{
+   // Your code here
+   priority_queue<Node*, vector<Node*>, compare>q;
+   
+   Node* curr = root;
+   while(curr != NULL)
+   {
+       q.push(curr);
+       curr = curr->next;
+   }
+   Node *head = NULL;
+   Node *last;
+   //cout<<q.size() << endl;
+   while(!q.empty())
+   {
+       Node *top = q.top();
+       q.pop();
+       
+       if(top->bottom != NULL)
+       q.push(top->bottom);
+       
+       if(head == NULL)
+       {
+           head = top;
+           last = top;
+       }
+       else
+       {
+           last->bottom = top;
+           last = top;
+       }
+       
+   }
+   return head;
+}
