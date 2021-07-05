@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& h) {
+        int res=0;
+        h.push_back(0);
+        vector<int>idx;
+        int n=h.size();
+        for(int i=0;i<n;i++){
+            while(idx.size()>0&&h[idx.back()]>=h[i]){
+                int  j=h[idx.back()];
+                idx.pop_back();
+                int sx=idx.size()>0?idx.back():-1;
+                if(j*(i-sx-1)>res){
+                    res=j*(i-sx-1);
+                }
+            }
+            idx.push_back(i);
+        }
+        return res;
+    }
+};
